@@ -1,0 +1,31 @@
+Montar disco de configuração
+=============================
+dism /Mount-Wim /WimFile:"c:\Win11\sources\install.wim" /index:1 /MountDir:"c:\Mount"
+
+
+
+Local para os scripts
+==============================
+C:\Mount\Windows\Setup\Scripts\SetupComplete.cmd
+
+
+"Comitar" alterações
+==============================
+
+dism /Unmount-Wim /MountDir:"C:\Mount" /Commit
+
+
+
+Link de download
+================================
+https://learn.microsoft.com/pt-br/windows-hardware/get-started/adk-install
+
+
+Local do Arquivo oscdimg.exe
+=============================
+
+C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Deployment Tools\amd64\Oscdimg\oscdimg.exe
+
+
+.\oscdimg.exe -m -o -u2 -udfver102 -bootdata:2#p0,e,bC:\Win11\boot\etfsboot.com#pEF,e,bC:\Win11\efi\microsoft\boot\efisys.bin C:\Win11\ C:\Win11_Custom.iso
+
