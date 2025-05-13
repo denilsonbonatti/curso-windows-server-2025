@@ -1,4 +1,5 @@
 Import-Module ActiveDirectory
+Install-WindowsFeature GPMC
 Import-Module GroupPolicy
 
 $senhaPadrao = ConvertTo-SecureString "Senha123" -AsPlainText -Force
