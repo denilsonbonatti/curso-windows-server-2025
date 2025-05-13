@@ -11,21 +11,29 @@ New-ADGroup -Name "GRP_EDU" -GroupScope Global -Path "OU=EDU,DC=empresa,DC=local
 New-ADGroup -Name "GRP_SEC" -GroupScope Global -Path "OU=SEC,DC=empresa,DC=local"
 
 Write-Host "Importando usuários do CSV..."
-$usuarios = Import-Csv -Path "C:\Scripts\user_ad2.csv" -Delimiter ";"
+
+$caminhoCSV = ".\users_ad2.csv"
+$senhaPadrao = ConvertTo-SecureString "Senha123" -AsPlainText -Force
+$usuarios = Import-Csv -Path $caminhoCSV -Encoding UTF8
 
 foreach ($user in $usuarios) {
-    $ou = $user.OU
-    $sam = $user.NomeUsuario
-    $nome = $user.NomeCompleto
+    $nomeUsuario = $user.NomeUsuario
+    $nomeCompleto = $user.NomeCompleto
+    $ou = $user.OU.Trim()
+
     $ouPath = "OU=$ou,DC=empresa,DC=local"
 
-    New-ADUser -SamAccountName $sam -Name $nome -AccountPassword $senhaPadrao -Enabled $true -Path $ouPath
-
-    if ($ou -eq "EDU") {
-        Add-ADGroupMember -Identity "GRP_EDU" -Members $sam
+    try {
+        New-ADUser -Name $nomeCompleto `
+                   -SamAccountName $nomeUsuario `
+                   -AccountPassword $senhaPadrao `
+                   -ChangePasswordAtLogon $false `
+                   -Enabled $true `
+                   -Path $ouPath
+        Write-Host "Usuario $nomeUsuario criado com sucesso na OU $ou"
     }
-    elseif ($ou -eq "SEC") {
-        Add-ADGroupMember -Identity "GRP_SEC" -Members $sam
+    catch {
+        Write-Warning "Erro ao tentar criar os usuarios $($_.Exception.Message)"
     }
 }
 
