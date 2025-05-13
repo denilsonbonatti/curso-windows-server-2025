@@ -45,6 +45,7 @@ icacls "C:\EDU" /grant "GRP_EDU:(OI)(CI)F" /T
 icacls "C:\SEC" /grant "GRP_SEC:(OI)(CI)F" /T
 
 
+
 # GPO para papel de parede
 New-GPO -Name "WallpaperEDUSEC"
 New-GPLink -Name "WallpaperEDUSEC" -Target "OU=EDU,DC=empresa,DC=local"
