@@ -1,4 +1,5 @@
 Import-Module ActiveDirectory
+Import-Module GroupPolicy
 
 $senhaPadrao = ConvertTo-SecureString "Senha123" -AsPlainText -Force
 
@@ -12,7 +13,7 @@ New-ADGroup -Name "GRP_SEC" -GroupScope Global -Path "OU=SEC,DC=empresa,DC=local
 
 Write-Host "Importando usuários do CSV..."
 
-$caminhoCSV = ".\users_ad2.csv"
+$caminhoCSV = ".\user_ad2.csv"
 $senhaPadrao = ConvertTo-SecureString "Senha123" -AsPlainText -Force
 $usuarios = Import-Csv -Path $caminhoCSV -Encoding UTF8
 
