@@ -2,8 +2,6 @@ Import-Module ActiveDirectory
 Install-WindowsFeature GPMC
 Import-Module GroupPolicy
 
-$senhaPadrao = ConvertTo-SecureString "Senha123" -AsPlainText -Force
-
 Write-Host "Criando Unidades Organizacionais..."
 New-ADOrganizationalUnit -Name "EDU" -Path "DC=empresa,DC=local" -ProtectedFromAccidentalDeletion $false
 New-ADOrganizationalUnit -Name "SEC" -Path "DC=empresa,DC=local" -ProtectedFromAccidentalDeletion $false
@@ -46,20 +44,6 @@ New-Item -Path "C:\SEC" -ItemType Directory
 icacls "C:\EDU" /grant "GRP_EDU:(OI)(CI)F" /T
 icacls "C:\SEC" /grant "GRP_SEC:(OI)(CI)F" /T
 
-Write-Host "Criando GPOs e definindo políticas..."
-
-# GPO para mapear \\server1\publica
-New-GPO -Name "MapPublica2"
-New-GPLink -Name "MapPublica2" -Target "OU=EDU,DC=empresa,DC=local"
-New-GPLink -Name "MapPublica2" -Target "OU=SEC,DC=empresa,DC=local"
-
-# GPO para mapear C:\EDU
-New-GPO -Name "MapEDU"
-New-GPLink -Name "MapEDU" -Target "OU=EDU,DC=empresa,DC=local"
-
-# GPO para mapear C:\SEC
-New-GPO -Name "MapSEC"
-New-GPLink -Name "MapSEC" -Target "OU=SEC,DC=empresa,DC=local"
 
 # GPO para papel de parede
 New-GPO -Name "WallpaperEDUSEC"
